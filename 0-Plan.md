@@ -1,6 +1,6 @@
 # CS61A Plan
 
-disc 05
+Disc 06
 
 [2021 Spring\] CS61A 学习笔记 索引 - ikventure - 博客园 (cnblogs.com)](https://www.cnblogs.com/ikventure/p/14984919.html) 
 
@@ -18,7 +18,7 @@ disc 05
 |          | Lab 05 |          |            | CAT-P3  |
 |          | Lab 06 |          |            |         |
 |          | Lab 07 |          |            |         |
-|          |        |          |            |         |
+|          | Lab 08 |          |            |         |
 |          |        |          |            |         |
 |          |        |          |            |         |
 

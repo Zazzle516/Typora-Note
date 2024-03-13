@@ -164,3 +164,185 @@ def make_generators_generator(g):
 ```
 
 不过确实是两个循环，只是有限循环，我之所以用 `loop-true` 是因为我没想到通过 `list()` 的方式强制求出外层循环次数
+
+经过一整轮的 Debug 我已经完全懂了，要注意一点，`yield` 语句的返回执行是单向的，不同于 `return expression` 在计算 `expression` 还会返回到该条语句处再执行 `return` 
+
+`yield expression` 语句更像是把 `expression` 扔出去计算了，不关心返回结果
+
+
+
+## WWPD: Objects
+
+### Q3: The Car class
+
+```shell
+python ok -q wwpd-car -u --local
+```
+
+```shell
+# 子类调用父类方法
+>>> Car.drive(deneros_car)
+# correct 'Monster Batmobile goes vroom!'
+```
+
+
+
+## Magic: The Lambda-ing
+
+实现一个卡牌游戏
+
+```shell
+# to start the game
+python cardgame.py
+```
+
+文件功能：
+
+- classes.py：完成问题
+- cardgame.py：关于该游戏的一些功能，完成问题不需要阅读该文件
+- cards.py：完成问题后可以自定义卡牌
+
+游戏规则：
+
+一共有两个玩家，每个玩家从自己的牌堆中抽一张到自己的手牌，每个牌都有自己的攻击和防御属性
+
+```
+(player card's attack) - (opponent card's defense) / 2
+```
+
+以 8 轮为界，先赢下 8 轮的本局获胜
+
+卡牌属性：
+
+- Tutor：迫使对手放弃本轮并且重抽手牌中的 3 张牌
+- TA：交换对手牌的攻击和防御
+- Professor：把对手的攻击和防御加到自己的牌堆上，然后移除对手牌堆中相同攻击和防御的牌
+
+
+
+### Q4: Making Cards
+
+```shell
+python ok -q Card.__init__ --local
+```
+
+```shell
+python ok -q Card.power --local
+```
+
+
+
+### Q5: Making a Player
+
+```shell
+python ok -q Player.__init__ --local
+```
+
+```shell
+python ok -q Player.draw --local
+```
+
+```shell
+python ok -q Player.play --local
+```
+
+
+
+# Optional Questions
+
+### Q6: Tutors: Flummox
+
+```shell
+python ok -q TutorCard.effect --local
+```
+
+
+
+### Q7: TAs: Shift
+
+```shell
+python ok -q TACard.effect --local
+```
+
+`other_card` 对手本轮出的牌，而 `effect` 函数是自己出的卡牌作用在对手的卡牌上
+
+
+
+### Q8: The Professor Arrives
+
+```shell
+python ok -q ProfessorCard.effect --local
+```
+
+把对手牌的攻击和防御各自加到对手的所有卡牌上，并且移出对手牌堆中攻击和防御相等的卡牌（Wrong
+
+```python
+# my code here
+class ProfessorCard(Card):
+    cardtype = 'Professor'
+
+    def effect(self, other_card, player, opponent):
+        orig_opponent_deck_length = len(opponent.deck.cards)
+        
+        "*** YOUR CODE HERE ***"
+        attack_add = other_card.attack
+        defense_add = other_card.defense
+
+        copied_opponent_deck = opponent.deck.copy()
+        print("DEBUG:", copied_opponent_deck.cards)
+        card_index = -1
+        for card in copied_opponent_deck.cards:
+            print("DEBUG:", card)
+            card_index += 1
+            card.attack += attack_add
+            card.defense += defense_add
+            print("DEBUG:", card.attack, card.defense) 
+            if card.attack == card.defense:
+                print("DEBUG:", card_index)
+                opponent.deck.cards.pop(card_index)
+        "*** YOUR CODE HERE ***"
+        
+        discarded = orig_opponent_deck_length - len(opponent.deck.cards)
+        if discarded:
+            #Uncomment the line below when you've finished implementing this method!
+            print('{} cards were discarded from {}\'s deck!'.format(discarded, opponent.name))
+            return
+
+    def copy(self):
+        return ProfessorCard(self.name, self.attack, self.defense)
+```
+
+```shell
+>>> professor_test.effect(opponent_card, player1, player2)
+DEBUG: [card: Staff, [300, 300], card: Staff, [300, 300], card: Staff, [300, 300]]
+DEBUG: card: Staff, [300, 300]
+DEBUG: 600 600
+DEBUG: 0
+DEBUG: card: Staff, [300, 300]
+DEBUG: 600 600
+DEBUG: 1
+DEBUG: card: Staff, [300, 300]
+DEBUG: 600 600
+DEBUG: 2
+Traceback (most recent call last):
+  File "D:\cs-61A\lecture-lab\lab08\classes.py", line 243, in effect
+    opponent.deck.cards.pop(card_index)
+IndexError: pop index out of range
+
+# Error: expected
+#     3 cards were discarded from p2's deck!
+# but got
+#     Traceback (most recent call last):
+#       ...
+#     IndexError: pop index out of range
+```
+
+不太能理解为什么出现 `out of range` 的错误，Debug 也能看到范围是相同的
+
+首先，我搞错了 `Professor` 规则，是把对手的攻击和防御加到自己的牌堆上，然后移除对手牌堆中相同攻击和防御的牌
+
+OK，now passed
+
+
+
+# Done!
