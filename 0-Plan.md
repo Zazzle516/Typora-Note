@@ -1,6 +1,8 @@
 # CS61A Plan
 
-Disc 06
+Disc 06 太难了 慢慢看
+
+先做后面的
 
 [2021 Spring\] CS61A 学习笔记 索引 - ikventure - 博客园 (cnblogs.com)](https://www.cnblogs.com/ikventure/p/14984919.html) 
 
