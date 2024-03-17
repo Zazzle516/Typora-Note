@@ -26,6 +26,35 @@ print(f(lambda x: x > 5))
 
 我想不到，我想不到啊啊啊啊啊
 
+找到答案了，但是只找到了这一道题的
+
+```python
+def nonlocalist():
+    get = lambda x: "Index out of range"    # 为什么会接收一个参数呢
+    def prepend(value):
+        nonlocal get	# 看到这步 小脑萎缩了 做不出来是有原因的
+        f = get
+        def get(i):
+            if i == 0:
+                return value
+            return f(i - 1)
+    return prepend,lambda x: get(x)
+
+prepend, get = nonlocalist()
+prepend(2)
+prepend(3)
+prepend(4)
+
+print(get(0))   # 4
+print(get(1))   # 3
+print(get(2))   # 2
+
+prepend(8)
+print(get(2))   # 2
+```
+
+超出了我的理解能力....我不知道
+
 
 
 ### 2.3
@@ -92,6 +121,8 @@ lambda f: f(f)	# 规定了 F 自己调用自己的递归方式
 ```
 
 虽然这道题我还是不知道怎么做，但是这个匿名函数的递归调用我好像懂了.... 虽然现在脑子有点疼×
+
+
 
 
 

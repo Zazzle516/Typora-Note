@@ -248,7 +248,7 @@ python ok -q Player.play --local
 
 
 
-# Optional Questions
+## Optional Questions
 
 ### Q6: Tutors: Flummox
 
