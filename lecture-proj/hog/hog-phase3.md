@@ -144,7 +144,7 @@ python calc.py --local
 
 # Phase3 Pass!
 
-```
+```python
 # check and submit
 python ok --score
 
