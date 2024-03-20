@@ -243,11 +243,101 @@ python ok -q store_digits --local
 
 
 
+返回函数，在返回的函数中声明实例，嗯，确实是我想不到的 :)
+
+```python
+def store_digits(n):
+    def helper(lst, n):
+        if n == 0:
+            return lst
+        lst = Link(n % 10, lst)		# 核心: 每次选取的最末尾元素添加到 Link.rest
+        return helper(lst, n//10)
+    ans = Link(n%10, Link.empty)
+    return helper(ans, n//10)
+```
+
+这里的实现方式就是逆着方向完成了递归，没想到居然真的能做到，看着答案很容易，但是这个思路真的很巧妙啊
+
+
+
 ## Generators/Trees
 
 ### Q6: Yield Paths
 
 ```shell
 python ok -q path_yielder --local
+```
+
+要求找到找到一棵树从根节点到某个值（结点值不唯一）的所有路径
+
+题目提示说在不考虑使用 yield 关键字的情况下想一想该如何实现
+
+（用循环 + 递归表示这个过程太复杂.. 嗯，总之我想的就是对 lst 进行 `append()` 和 `pop()` 操作
+
+使用 generator 相对于递归，特殊点就在于及时返回结果保存状态（从这个角度确实应该用生成器
+
+就是遍历整棵树，如果找到了特定值，直接通过 yield 返回，然后继续遍历（在 t2 的举例中也能说明这点
+
+
+
+我目前没有想明白第二个循环该干什么，所以我首先是这么写
+
+```python
+def path_yielder(t, value):
+    "*** YOUR CODE HERE ***"
+    if t.label == value:
+        yield [t.label]
+    for branch in t.branches:
+        "*** YOUR CODE HERE ***"
+        yield [t.label] + path_yielder(branch,value)   # Error: path_yielder is generator
+
+# 理所当然的出错了
+```
+
+虽是如此，第二个循环该写什么我还是不知
+
+```python
+def path_yielder(t, value):
+    "*** YOUR CODE HERE ***"
+    if t.label == value:
+        yield [value]
+    for b in t.branches:
+        for path in path_yielder(b, value):
+            # emm.. 思路上问题不大 就是需要拆出一个循环用于类型处理
+            yield [t.label] + path
+```
+
+啊啊啊啊啊啊啊啊啊啊啊啊，我明明那么接近了啊啊啊啊啊啊啊啊啊啊啊啊，不要把函数的递归调用写在 yield 中
+
+至于为什么要写成循环，从理论上来说，这个 path 只有一个元素，只是 path_yielder() 返回生成器只能通过 `for-loop` 才能正确的把里面的内容取出来
+
+```python
+def path_yielder(t, value):
+    "*** YOUR CODE HERE ***"
+    if t.label == value:
+        yield [value]
+    for b in t.branches:
+        path = path_yielder(b, value)	# Error: TypeError
+        yield [t.label] + path
+```
+
+
+
+# Optional Questions
+
+### Q7: Remove All
+
+```shell
+python ok -q remove_all --local
+```
+
+在原链表的基础上修改，
+
+同样还是两个一组去修改，但是要考虑递归不能返回任何直接结果
+
+### Q8: Deep Map
+
+```
+
 ```
 
