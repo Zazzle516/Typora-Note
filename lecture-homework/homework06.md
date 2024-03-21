@@ -331,13 +331,71 @@ def path_yielder(t, value):
 python ok -q remove_all --local
 ```
 
-在原链表的基础上修改，
+在原链表的基础上修改，题目假设至少有一个可以被移除的目标结点，并且首结点不会被移除
 
-同样还是两个一组去修改，但是要考虑递归不能返回任何直接结果
+我猜同样还是两个一组去修改，但是要考虑递归不能返回任何直接结果（不是说递归不能返回任何东西，而是不能返回到最上层，我想首结点不会是目标结点的原因就是这个
+
+
+
+靠自己通过了一题！开心~
+
+
 
 ### Q8: Deep Map
 
+```shell
+python ok -q deep_map --local
 ```
 
+返回一个新列表，结构需要和参数保持一致，同时传入的参数 f 需要对 link 中每一个元素（包括递归元素）应用
+
+只能递归式完成，因为要考虑保存变量，用子函数试试
+
+不对，不用
+
+```python
+def deep_map(f, link):
+    if link.rest is not Link.empty:
+        if type(link.first) == Link:
+            Link(deep_map(f, link.first))
+        elif type(link.first) is int:
+            Link(f(link.first), deep_map(f, link.rest))
+    else:
+        Link(f(link.first))
+
+# s = Link(1, Link(Link(2, Link(3)), Link(4)))
+# Link(3): Assertion Error
 ```
 
+Emm.. 我在 debug 的时候可以执行 Link(9) 的构造，然后紧接着就会发生判断错误，我并不太理解为什么
+
+去可视化代码看一下，从 step_30 开始
+
+这里返回的是 None 欸，因为只是声明了一个新的实例，并没有用这个实例做任何事，所以声明完后就消失了
+
+![](./hw06 pic/屏幕截图 2024-03-21 213443.png)
+
+感觉自己卡住了，去看看答案
+
+```python
+def deep_map(f, link):
+    if link == Link.empty:
+        return Link.empty
+    if isinstance(link.first, Link):
+        first = deep_map(f, link.first)
+    else:
+        first = f(link.first)
+    return Link(first, deep_map(f, link.rest))
+```
+
+这里是把 Link.first 和 Link.rest 分开去递归（which is so right, why didn't I thought of that...
+
+我懂了（反正看懂了，希望下次可以做出来	理论上这题不难的啊，不知道为啥没做出来，有点难过
+
+我发现我的思维真的很容易走偏，不知道为啥
+
+
+
+# Done!
+
+总而言是，完成了，向着 Proj3 进发
