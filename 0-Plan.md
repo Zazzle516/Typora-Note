@@ -21,7 +21,7 @@ Disc 09	Chap3
 |          | Lab 04 | hw 05    | Disc 05      | CAT-P2  |
 |          | Lab 05 | hw 06    | Disc 06 放弃 | CAT-P3  |
 |          | Lab 06 |          | Disc 08      |         |
-|          | Lab 07 |          |              |         |
+|          | Lab 07 |          | Disc 09      |         |
 |          | Lab 08 |          |              |         |
 |          | Lab 09 |          |              |         |
 |          |        |          |              |         |

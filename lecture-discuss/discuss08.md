@@ -1,4 +1,4 @@
-# Iterators Generators OOP
+# Iterators, Generators, OOP
 
 ## Iterators
 
