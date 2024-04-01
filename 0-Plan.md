@@ -1,10 +1,8 @@
 # CS61A Plan
 
-Disc 09	Chap3
+Chap3		Project-ants 可以之后再说
 
-五月之前把 Chap3 看完
 
-先做后面的
 
 [2021 Spring\] CS61A 学习笔记 索引 - ikventure - 博客园 (cnblogs.com)](https://www.cnblogs.com/ikventure/p/14984919.html) 
 
@@ -20,7 +18,7 @@ Disc 09	Chap3
 |          | Lab 03 | hw 04    | Disc 04      | CAT-P1  |
 |          | Lab 04 | hw 05    | Disc 05      | CAT-P2  |
 |          | Lab 05 | hw 06    | Disc 06 放弃 | CAT-P3  |
-|          | Lab 06 |          | Disc 08      |         |
+|          | Lab 06 |          | Disc 08      | ANT-P1  |
 |          | Lab 07 |          | Disc 09      |         |
 |          | Lab 08 |          |              |         |
 |          | Lab 09 |          |              |         |
