@@ -49,3 +49,77 @@ python ok -q 05 -u --local
 
 如果承伤到死亡，还会额外造成默认伤害（3），发生在被移除出位置之前
 
+总之就是先获取当前同一个位置内的所有蜜蜂，然后造成 `amount` 伤害
+
+```shell
+>>> place = gamestate.places['tunnel_0_4']
+>>> fire = FireAnt(armor=1)
+>>> place.add_insect(fire)        # Add a FireAnt with 1 armor
+>>> place.add_insect(Bee(3))      # Add a Bee with 3 armor
+>>> place.add_insect(Bee(5))      # Add a Bee with 5 armor
+
+>>> place.bees[0].action(gamestate)
+```
+
+```shell
+python ok -q 05 --local
+```
+
+
+
+不明白为什么直接写 `Insect.reduce_armor` 不可以，=> 要调用 Ant 因为测试用例里面是通过 Ant 去修改的
+
+```shell
+Ant.__init__ = lambda self, armor: print("init") #If this errors, you are not calling the parent constructor correctly.
+```
+
+不能跨越自己的父类去找更上层
+
+注意不能在计算伤害才获取当前格子内的蜜蜂，因为炸弹蚁死了之后就会被移除当前的 place ，无法通过该 place 再去找蜜蜂
+
+用到数组拷贝的原因：因为当蜜蜂受到攻击死亡之后，会调用 `remove_from()` 方法，这个时候会改变可迭代对象
+
+对蜜蜂的攻击要用已经存在的函数，注意 abstraction barrier
+
+
+
+### Problem 6
+
+```shell
+python ok -q 06 -u --local
+```
+
+食人蚁，消耗 3 回合进行消化，从当前位置随机挑选一个蜜蜂吃掉
+
+```shell
+python ok -q 06 --local
+```
+
+这个问题比想象的简单
+
+
+
+### Problem 7
+
+```shell
+python ok -q 07 -u --local
+```
+
+不爆点数的投锋，伤害所有经过的蜜蜂，但是不阻止它们（也无法被攻击
+
+> When there is an Ant whose blocks_path attribute is True in the Bee's place
+
+```shell
+python ok -q 07 --local
+```
+
+改了半天的 `Bee.block()` 判断终于改对了，累死我了
+
+
+
+# Phase2 Pass!
+
+还行，完成了[]~(￣▽￣)~*
+
+
+
