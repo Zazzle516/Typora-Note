@@ -1,6 +1,6 @@
 # CS61A Plan
 
-Chap3		Project-ants 可以之后再说
+Chap3
 
 
 
@@ -21,7 +21,7 @@ Chap3		Project-ants 可以之后再说
 |          | Lab 06 |          | Disc 08      | ANT-P1  |
 |          | Lab 07 |          | Disc 09      | ANT-P2  |
 |          | Lab 08 |          |              | ANT-P3  |
-|          | Lab 09 |          |              |         |
+|          | Lab 09 |          |              | ANT-P4  |
 |          |        |          |              |         |
 
 
