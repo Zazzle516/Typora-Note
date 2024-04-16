@@ -135,3 +135,43 @@ hls 直播
 trmp
 
 QUIC UDP
+
+
+
+# 2024/4/6
+
+git push ssh 和 http 的 get 区别
+
+smart protocal / http protocal
+
+git clone 过程
+
+第一次请求
+
+从客户端先发起一次 get 请求 info/refs
+
+第二次请求
+
+POST Github 更偏向业务层 /git-upload-pack
+
+
+
+用户鉴权 http basic auth
+
+
+
+SSH
+
+git 本身就等价于 ssh git 只是 ssh 的包装
+
+ssh鉴权，公钥私钥，ssh 双工通信
+
+极狐gitlib（只要装了 open-ssh 就支持 22 端口
+
+
+
+gitdiff to html
+
+
+
+控制台 控制协议 ANSI escape code
