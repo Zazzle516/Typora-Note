@@ -91,6 +91,23 @@ else:
 
 
 
+### Function Call
+
+传参可以传多个
+
+```scheme
+; 通过 (sym1 sym2 ... symn . symr)	用 symr 来接收多余参数
+(define (sum . numbers)
+  (apply + numbers)
+)
+
+(display (sum 1 2 3 4))
+```
+
+
+
+
+
 ### Begin expression
 
 把写在 begin 后面的每个 expression 都进行一遍求值，并把最后一个 expression 作为返回结果

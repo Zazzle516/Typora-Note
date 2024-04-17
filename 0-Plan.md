@@ -20,7 +20,7 @@ Chap3
 |          | Lab 05 | hw 06    | Disc 06 放弃 | CAT-P3  |
 |          | Lab 06 |          | Disc 08      | ANT-P1  |
 |          | Lab 07 |          | Disc 09      | ANT-P2  |
-|          | Lab 08 |          |              | ANT-P3  |
+|          | Lab 08 |          | Disc 10      | ANT-P3  |
 |          | Lab 09 |          |              | ANT-P4  |
 |          | Lab 10 |          |              |         |
 |          |        |          |              |         |
