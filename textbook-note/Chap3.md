@@ -306,3 +306,23 @@ scheme 中没有定义额外的循环语句，基本都是通过递归实现
 120
 ```
 
+
+
+# Logo
+
+看到书里面提到了 `Lexical Scoping` 和 `Dynamic Scoping` 这两个概念，有一些资料说的很好
+
+[Static and Dynamic Scoping - GeeksforGeeks](https://www.geeksforgeeks.org/static-and-dynamic-scoping/)
+
+[Lexical and Dynamic Scope (northeastern.edu)](https://prl.khoury.northeastern.edu/blog/2019/09/05/lexical-and-dynamic-scope/) 
+
+（分析一下，我实习的这个 Antlr4 项目应该是 Dynamic Scope	但是从运行效果上看是 Lexical Scope
+
+
+
+```logo
+? to ifelse2 :predicate :True :False
+> output run run word ": :predicate
+> end
+```
+
