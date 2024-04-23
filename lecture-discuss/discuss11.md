@@ -355,6 +355,26 @@ scm> (prune-expr (prune-expr (+ 10 100) 'garbage))
 
 
 
+我找到了！！！！！！！！
+
+```scheme
+(define (helper expr remove)
+    (cond ((null? expr) nil)
+		  (remove (helper (cdr expr) #f))
+		  (else (cons (car expr) (helper (cdr expr) #t)))))
+
+(define-macro (prune-expr expr)
+    ; 我还在想是什么高大上的解法 结果就是用了 eval 函数 感觉自己被骗了
+    ; 不过 define-macro 反引号 逗号 的使用还是要学习的
+  `(eval (cons (car ',expr) (helper (cdr ',expr) #f)))
+)
+
+; 注意到在递归测试中 内层的 operator 并没有给出
+(prune-expr (prune-expr (+ 10 100) 'garbage))
+```
+
+
+
 ### 3.3
 
 自定义一个新的语法执行结构，如果 condition 为真，那么计算下面的所有表达式并且返回最后一个表达式的值作为结果，否则 condition 整体返回 okay
@@ -406,3 +426,4 @@ a
 # Done?
 
 我就这么认为了，没办法，我也找不到答案，我能怎么办😭
+
