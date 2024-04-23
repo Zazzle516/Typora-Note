@@ -308,6 +308,105 @@ scheme 中没有定义额外的循环语句，基本都是通过递归实现
 
 
 
+Scheme 相关编程汇总
+
+```scheme
+(define (unique s)
+  'YOUR-CODE-HERE
+  (define (find-item item sublst)
+    (if (null? sublst)
+        #f
+        (if (eq? item (car sublst))
+            #t
+            (find-item item (cdr sublst)))))
+  (define (repeated x blst)
+    (if (find-item x blst)
+        blst
+        (cons x blst)))
+  (define (creat-new-list s alst)
+    (if (null? s)
+        alst
+        (creat-new-list (cdr s) (repeated (car s) alst))))
+  (define lst '())
+  (creat-new-list s lst))
+
+; (define (fact n)
+;     (if (= n 0)
+;         1
+;         (* n (fact (- n 1)))
+;     )
+; )
+(define (fact n)
+  ; 实际上只用到了子函数 fact-tail 外层函数只负责保存变量
+  (define (fact-tail n result)
+    (if (= n 0)
+        result
+        (fact-tail (- n 1) (* result n))))
+  (fact-tail n 1))
+
+(define (reverse lst)
+    (if (null? lst)
+        '()
+        (cons (reverse (cdr lst))  (cons (car lst) '()))
+    )
+)
+
+
+(define (reversed lst)
+  (define (iter result remaining)
+    (if (null? remaining)
+        result
+        (iter (cons (car remaining) result) (cdr remaining))))
+  
+  (iter '() lst))
+
+(define (inserted n lst)
+    (define (copy-lst n result lst)
+        (if (null? lst)
+            result
+            (if (> n (car lst))
+                (if (< n (car (cdr lst)))
+                    (copy-lst n (cons result (cons (car lst) (cons n nil))) (cdr lst))
+                    (copy-lst n (cons result (cons (car lst) nil)) (cdr lst))
+                )
+                (copy-lst n (cons result (cons (car lst) nil)) (cdr lst))
+            )
+        )
+    )
+    (copy-lst n () lst)
+)
+
+; no tail recursion
+(define (insert elem lst)
+    (if (null? lst)
+        (list elem)
+        (if (< elem (car lst))
+            (cons elem lst)
+            (cons (car lst) (insert elem (cdr lst)))
+        )
+    )
+)
+
+
+
+(define (accumulate-tail combiner start n term)
+  'YOUR-CODE-HERE
+  (define (inner-accu combiner start n term result)
+    (if (= n 1)
+      result
+      (inner-accu combiner (+ start 1) (- n 1) term (combiner result (term start)))
+    )
+  )
+  (inner-accu combiner '1 n term start)
+)
+
+(define (identity x) x)
+
+(accumulate-tail * 1 5 identity)
+```
+
+
+
 # Logo
 
 看到书里面提到了 `Lexical Scoping` 和 `Dynamic Scoping` 这两个概念，有一些资料说的很好
