@@ -124,7 +124,7 @@ python scheme.py tests.scm
 | Input Example  | Scheme Expression Type | Our Internal Representation                                  |
 | -------------- | ---------------------- | ------------------------------------------------------------ |
 | `scm> 1`       | Number                 | Python's built-in `int` and `float` values                   |
-| `scm> 1x`      | Symbols                | Python's built-in `string` values                            |
+| `scm> x`       | Symbols                | Python's built-in `string` values                            |
 | `scm> #t`      | Booleans(`#t`, `#f`)   | Python's built-in `True`, `False` values                     |
 | `scm> (+ 2 3)` | Combinations           | Instances of the `Pair` class, defined in `scheme_reader.py` |
 | `scm> nil`     | `nil`                  | The `nil` object, defined in `scheme_reader.py`              |
@@ -212,10 +212,6 @@ read_line("(+ (- 2 3) 1)")
 ```
 
 实现起来最主要的应该是 `read_tail()` 因为是真正返回 `Pair` 序列的
-
-```
-python ok -q 01 --suite 1 --case 1 --local
-```
 
 
 
@@ -333,9 +329,145 @@ def parenthes_check(src):
 test_src = copy.deepcopy(src.current_line[src.index:])
 ```
 
+
+
+**Q：**在测到 case7 的时候又出了问题，嵌套的子表达式在结束后直接 `return nil` 导致提前结束
+
+```python
+from scheme_reader import *
+
+# Pair('+', Pair(Pair('-', Pair(2, Pair(3, nil))), Pair(1, nil)))
+
+# 这个是我修改 read_tail().")" 的输出 显然也不对 然后才发现是 read_tail().scheme_read() 问题
+# Pair('+', Pair(Pair('-', Pair(2, Pair(3, Pair(1, nil)))), nil))
+
+# 核心问题是执行到 '1)' 提前结束了  因为直接 return nil  根据 src.index 也能判断没有读完
+print(repr(read_line("(+ (- 2 3) 1)")))
+
+# 如果在 read_tail().")" 情况再开一个 Pair 结构就会混乱
+# 问题是在 "(" 的判断中 构造的 Pair 的第二个元素应不应该为 nil
+```
+
+根据结构进行了一点修改
+
+```python
+# if src_first == '(':
+#	return Pair(scheme_read(src), nil)
+
+if src_first == '(':
+	return Pair(scheme_read(src), read_tail(src))
+```
+
+
+
 至此，终于通过测试... 真是艹了，我去看看答案
 
+PS：能明显感受我的测试运行时间很长，真是抱歉了呜呜呜呜呜
 
+```python
+def scheme_read(src):
+    """Read the next expression from SRC, a Buffer of tokens.
+
+    >>> scheme_read(Buffer(tokenize_lines(['nil'])))
+    nil
+    >>> scheme_read(Buffer(tokenize_lines(['1'])))
+    1
+    >>> scheme_read(Buffer(tokenize_lines(['true'])))
+    True
+    >>> scheme_read(Buffer(tokenize_lines(['(+ 1 2)'])))
+    Pair('+', Pair(1, Pair(2, nil)))
+    """
+    if src.current() is None:
+        raise EOFError
+    val = src.pop_first() # Get the first token
+    
+    if val == 'nil':
+        # BEGIN PROBLEM 1
+        "*** YOUR CODE HERE ***"
+        return nil
+        # END PROBLEM 1
+    elif val == '(':
+        # BEGIN PROBLEM 1
+        "*** YOUR CODE HERE ***"
+        return read_tail(src)
+        # END PROBLEM 1
+    elif val in quotes:
+        # BEGIN PROBLEM 6
+        "*** YOUR CODE HERE ***"
+        # END PROBLEM 6
+    elif val not in DELIMITERS:
+        return val
+    else:
+        raise SyntaxError('unexpected token: {0}'.format(val))
+
+def read_tail(src):
+    """Return the remainder of a list in SRC, starting before an element or ).
+
+    >>> read_tail(Buffer(tokenize_lines([')'])))
+    nil
+    >>> read_tail(Buffer(tokenize_lines(['2 3)'])))
+    Pair(2, Pair(3, nil))
+    """
+    try:
+        if src.current() is None:
+            # case: no more tokens
+            raise SyntaxError('unexpected end of file')
+        
+        elif src.current() == ')':
+            # BEGIN PROBLEM 1
+            "*** YOUR CODE HERE ***"
+            # case: ')'
+            src.pop_first()
+            return nil
+            # return Pair(nil, read_tail(src))
+            # END PROBLEM 1
+        
+        else:
+            # BEGIN PROBLEM 1
+            "*** YOUR CODE HERE ***"
+            test_src = copy.deepcopy(src.current_line[src.index:])
+            if parenthes_check(test_src):
+                raise SyntaxError('wrong number ()')
+            src_first = src.current()
+            if src_first == '(':
+                return Pair(scheme_read(src), read_tail(src))
+            else:
+                src.pop_first()
+                return Pair(src_first, read_tail(src))
+            # END PROBLEM 1
+    
+    except EOFError:
+        raise SyntaxError('unexpected end of file')
+
+def parenthes_check(src):
+    # False: normal     True: SyntaxError
+    left_num = 0
+    right_num = 0
+    
+    def inner_count(sub_src):
+        nonlocal left_num
+        nonlocal right_num
+        if len(sub_src) == 0:
+            if (right_num - left_num) < 1:
+                return True
+            return False
+        elif sub_src[0] == '(':
+            left_num += 1
+            sub_src.pop(0)
+            return inner_count(sub_src)
+        elif sub_src[0] == ')':
+            right_num += 1
+            sub_src.pop(0)
+            return inner_count(sub_src)
+        else:
+            sub_src.pop(0)
+            return inner_count(sub_src)
+
+    return inner_count(src)
+
+# 其实改到这里就能有点意识到应该有更简单的递归...
+# 因为本质上我是一个循环的思路 强行套在递归上 导致这么丑陋
+```
 
 测试实现
 
@@ -357,5 +489,39 @@ exit	# exit the interpreter
 
 # Phase1 Pass!
 
-这个 phase1 比我想象的艰辛的多，虽然是完成了，但是感觉完成的很丑陋2
+这个 phase1 比我想象的艰辛的多，虽然是完成了，但是感觉完成的很丑陋23333
+
+
+
+我看答案了，有点破防了，呜呜呜呜呜呜
+
+直接利用 `scheme_read()` 的异常处理就可以了，我还在想呢，我难道要自己写 `SyntaxError` 果然不需要
+
+
+
+### Answer Think
+
+核心是对 Buffer 这个数据结构没有深入理解，其实到最后我的实现和答案的结构也已经很像了.....
+
+Buffer 中的数据不会消失，改变的只是 `Buffer.index` 所以只要能让 `index` 增加，就一定能结束递归
+
+（同理，因为 Buffer 中的数据不会消失，所以不用每次对 `parenthes_number` 进行判断）
+
+
+
+也有对 `scheme_read()` 函数功能认知不清晰的原因，一个完整的表达式不止包括 `(expr)` 也包括数字和字符
+
+假设输入的表达式都是合乎语法的，如果出现括号不匹配的问题，一定会在最后构造错误
+
+
+
+从 Pair 构造的结构去考虑，一个 `full expr` 的内部必然是一个个 `sub full expr` 构成的，所以每次通过 `scheme_read()` 读取当前一个完整的 `sub full expr` 再通过递归 `read_tail` 依次处理剩余的
+
+```python
+# 读取一个完整表达式    1. number	2. symbol	3. (expr)
+first = scheme_read(src)
+
+# 递归依次
+rest = tail_read(src)
+```
 
