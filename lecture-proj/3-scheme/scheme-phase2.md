@@ -271,3 +271,106 @@ python ok -q 04 --local
 python ok -q 05 -u --local
 ```
 
+实现命名，`define` 主要包括 3 个功能，定义变量，定义用户自定义函数，定义匿名函数
+
+这里只实现第一个功能，对变量进行定义，区别在于接收的参数是否是列表，在 `do_define_form` 第一部分
+
+```
+Q: What is the structure of the expressions argument to do_define_form?
+Pair(A, Pair(B, nil)), where:
+   A is the symbol being bound,
+   B is an expression whose value should be evaluated and bound to A
+   
+(eval (define tau 6.28))
+eval takes an expression represented as a list and evaluates it
+6.28
+```
+
+
+
+```shell
+python ok -q 05 --local
+```
+
+以一种很暴力很丑陋的方式解决了这个问题...	我自己都要受不了了
+
+这里题目有提到，在实现之后考虑一下更极端的输入情况
+
+- 在 `scheme_eval()` 执行计算之前是否要考虑运算的合法性
+- 以不正确的语法输入时，是否会有合适的错误提示
+- 在 `define` 求值过程中，可能嵌套处理特殊情况
+
+这些我还真没想....
+
+
+
+不过看了答案，也确实就这么写，只是把行数浓缩了，执行是相同的
+
+
+
+### Problem 6
+
+```shell
+python ok -q 06 -u --local
+```
+
+
+
+```shell
+Q: What is the structure of the expressions argument to do_quote_form?
+# Pair(A, nil), where: A is the quoted expression
+"交由 do_quote_define() 处理的 expression 本身不包含 quote"
+
+Q: do_quote_form(Pair('hi', nil), global_frame)
+# 'hi'
+
+Q:
+>>> expr = Pair(Pair('+', Pair('x', Pair(2, nil))), nil)
+>>> do_quote_form(expr, global_frame)
+# Pair('+', Pair('x', Pair(2, nil)))
+"从这里就能看出直接按原结构返回即可"
+
+Q:
+>>> ''hello
+#  (quote hello)
+"不同于上面直接调用 do_quote_form 的测试 这里的输入是在 scheme 解释器中"
+"(''hello) 的解析会先经过 scheme_read() 处理 (quote(quote hello)) => "
+
+Q:
+>>> (eval (cons 'car '('(4 2))))
+# 4
+
+Q: read_line(" '(a b) ")
+# Pair('quote', Pair(Pair('a', Pair('b', nil)), nil))
+
+Q: read_line(" `(,b) ")
+# Pair('quasiquote', Pair(Pair(Pair('unquote', Pair('b', nil)), nil), nil))
+```
+
+
+
+实现 scheme 中的引用 quoting 功能 `do_quote_form()`，要求返回不进行求值的特殊表达式
+
+然后，实现在 `scheme_reader.scheme_read()` 功能中的 `quote` 问题，同样涉及递归性调用
+
+```
+'<expr> => (quote <expr>)
+`<expr> => (quasiquote <expr>)
+,<expr> => (unquote <expr>)
+```
+
+处理的方式其实是再套了一层 Pair，`Pair('quote', Pair('bagel', nil))` 表示 `'bagel` 
+
+```shell
+python ok -q 06 --local
+```
+
+看着很难，没想到顺利解决了23333，可能是 Q4 的过程，这个答案我写的还蛮优雅欸hhhhh
+
+
+
+# Phase2 Pass!
+
+主要是在 Q4 感受到了严重的挫败，看了答案也发现即使有思路，那样的解答也不是我能写出来的👾
+
+虽然说 Don't Compare 但是遇到这种情况，确实难免对自己失望，不过剩下的内容也要好好努力完成
