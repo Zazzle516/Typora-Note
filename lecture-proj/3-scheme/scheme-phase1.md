@@ -521,7 +521,7 @@ Buffer 中的数据不会消失，改变的只是 `Buffer.index` 所以只要能
 # 读取一个完整表达式    1. number	2. symbol	3. (expr)
 first = scheme_read(src)
 
-# 递归依次
+# 递归依次处理
 rest = tail_read(src)
 ```
 
