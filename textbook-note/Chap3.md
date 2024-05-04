@@ -1,6 +1,6 @@
 # Scheme
 
-在本机环境上运行 scheme		（用 C 实现
+公开的 scheme 解释器，在本机环境上运行		（用 C 实现
 
 ```shell
 chicken --version	# Compiler Interpreter
@@ -285,6 +285,7 @@ scheme 中没有定义额外的循环语句，基本都是通过递归实现
 
 ```scheme
 (define (sum-while starting-x while-condition add-to-total update-x)
+  	; 必须通过 begin 调用 否则直接使用 define 的话作为被引量不会被识别
     `(begin
         (define (f x total)
           ; "," 表示 while-condition 在调用外层函数时这里要进行替换
@@ -415,7 +416,13 @@ Scheme 相关编程汇总
 
 [Lexical and Dynamic Scope (northeastern.edu)](https://prl.khoury.northeastern.edu/blog/2019/09/05/lexical-and-dynamic-scope/) 
 
-（分析一下，我实习的这个 Antlr4 项目应该是 Dynamic Scope	但是从运行效果上看是 Lexical Scope
+```
+func f(x)
+	x = 5
+	
+func A(x = 5)
+		extend current env
+```
 
 
 
