@@ -78,3 +78,87 @@ scheme_eval = optimize_tail_calls(scheme_eval)
 python ok -q 20 --local
 ```
 
+到了这道题我真是没勇气了2333
+
+
+
+先复习一下 scheme 中的 `define-macro` 有点忘记了..
+
+题目有提到 `Variadic` 变量，可变参数的，类似于 `Python` 中的 `*args` 传参，接收任意数量
+
+这个关键字主要是用于 HOF 构建函数，通过自定义表达式的计算顺序（给出一个 `SPECIAL FORM` 的顶层实现
+
+```scheme
+(define (twice f) (begin f f))
+; twice
+(twice (print 'woof))
+"以 (print 'woof) 的返回值 nil 作为参数 f 传入 自然没有任何反应"
+; woof
+
+(define-macro (name (variadic-param)) (body) )
+
+(define-macro (twice f) (list 'begin f f))
+; twice
+(twice (print 'woof))
+; woof
+; woof
+
+; program as data
+```
+
+
+
+题目提示实现方法类似于 `do_define_form()`，是用户手动写入 `list` 直接把返回值作为数据存储
+
+Special Rule：it is applied to its arguments without first evaluating them
+
+```scheme
+(define (map f lst) (if (null? lst) nil (cons (f (car lst)) (map f (cdr lst)))))
+
+(define-macro (for formal iterable body)
+              ; (list 'lambda (list formal) body) => f
+              ; iterable => lst
+              (list 'map (list 'lambda (list formal) body) iterable)
+              )
+
+(for i '(1 2 3)
+     (print (* i i))
+)
+
+; 1
+; 4
+; 9
+; (None None None)
+```
+
+
+
+完成 `do_define_macro()`，创造一个 `MacroProcedure Instance` 并绑定在 `do_define_macro()` 给定的名字
+
+还要更新 `scheme_eval()` 的实现，满足 `macro procedure` 的正确实现
+
+（提示使用 `MacroProcedure.apply_macro()` 成员函数，适配尾递归情况
+
+```python
+from scheme import *
+env = create_global_frame()
+expr = read_line("((f x) (car x))")
+
+print(do_define_macro(expr, env))
+
+expr2 = read_line("(f (1 2))")
+
+print(scheme_eval(expr2, env))		# key point
+```
+
+笔记基本写在注释中了，只能说这道题表面上是写 `macro` 实际上还是对 `tail recursion` 的处理
+
+
+
+好像对 Q19 的尾递归理解更深刻了，判断为 `True` 直接返回 `Thunk` 本质上是直接返回了一个未计算的表达式，在下一次递归使用到相应变量的时候才会进行计算（所以其实也有点像 `macro` 的
+
+
+
+# Phase6 Pass!
+
+不管怎么样，反正是写完啦，嘟嘟嘟！ヾ(≧▽≦*)o
