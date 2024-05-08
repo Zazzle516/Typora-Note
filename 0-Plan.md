@@ -24,7 +24,7 @@
 |          | Lab 09 |          | Disc 11      | ANT-P4    |
 |          | Lab 10 |          |              | Scheme-P1 |
 |          | Lab 11 |          |              | Scheme-P2 |
-|          |        |          |              | Scheme-P3 |
+|          | Lab 12 |          |              | Scheme-P3 |
 |          |        |          |              | Scheme-P4 |
 |          |        |          |              | Scheme-P5 |
 |          |        |          |              | Scheme-P6 |
