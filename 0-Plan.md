@@ -1,6 +1,6 @@
 # CS61A Plan
 
-在五月份内完成 cs61A 的全部内容
+在 5/ 15 号之前内完成 cs61A 的全部内容
 
 
 
@@ -25,7 +25,7 @@
 |          | Lab 10 |          |              | Scheme-P1 |
 |          | Lab 11 |          |              | Scheme-P2 |
 |          | Lab 12 |          |              | Scheme-P3 |
-|          |        |          |              | Scheme-P4 |
+|          | Lab 1  |          |              | Scheme-P4 |
 |          |        |          |              | Scheme-P5 |
 |          |        |          |              | Scheme-P6 |
 
