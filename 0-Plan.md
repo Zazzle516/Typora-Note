@@ -19,13 +19,13 @@
 |          | Lab 04 | hw 05    | Disc 05      | CAT-P2    |
 |          | Lab 05 | hw 06    | Disc 06 放弃 | CAT-P3    |
 |          | Lab 06 | hw 07    | Disc 08      | ANT-P1    |
-|          | Lab 07 |          | Disc 09      | ANT-P2    |
+|          | Lab 07 | hw08     | Disc 09      | ANT-P2    |
 |          | Lab 08 |          | Disc 10      | ANT-P3    |
 |          | Lab 09 |          | Disc 11      | ANT-P4    |
 |          | Lab 10 |          |              | Scheme-P1 |
 |          | Lab 11 |          |              | Scheme-P2 |
 |          | Lab 12 |          |              | Scheme-P3 |
-|          | Lab 1  |          |              | Scheme-P4 |
+|          | Lab 13 |          |              | Scheme-P4 |
 |          |        |          |              | Scheme-P5 |
 |          |        |          |              | Scheme-P6 |
 
