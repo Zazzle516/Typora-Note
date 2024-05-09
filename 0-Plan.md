@@ -1,9 +1,5 @@
 # CS61A Plan
 
-在 5/ 15 号之前内完成 cs61A 的全部内容
-
-
-
 [2021 Spring\] CS61A 学习笔记 索引 - ikventure - 博客园 (cnblogs.com)](https://www.cnblogs.com/ikventure/p/14984919.html) 
 
 [CS 61A (naomijung.github.io)](https://naomijung.github.io/cs61a.html) 
